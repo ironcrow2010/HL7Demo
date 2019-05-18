@@ -4,17 +4,19 @@ import ca.uhn.hl7v2.DefaultHapiContext;
 import ca.uhn.hl7v2.HL7Exception;
 import ca.uhn.hl7v2.HapiContext;
 import ca.uhn.hl7v2.model.Message;
+import ca.uhn.hl7v2.model.v251.group.OML_O21_ORDER;
+import ca.uhn.hl7v2.model.v251.group.OML_O21_SPECIMEN;
 import ca.uhn.hl7v2.model.v251.message.ACK;
 import ca.uhn.hl7v2.model.v251.message.ADT_A01;
-import ca.uhn.hl7v2.model.v251.message.ADT_A05;
-import ca.uhn.hl7v2.model.v251.segment.MSA;
-import ca.uhn.hl7v2.model.v251.segment.MSH;
+import ca.uhn.hl7v2.model.v251.message.OML_O21;
+import ca.uhn.hl7v2.model.v251.segment.*;
 import ca.uhn.hl7v2.parser.GenericParser;
 import ca.uhn.hl7v2.parser.Parser;
 import com.winning.common.FileUtil;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
+import java.util.List;
 import java.util.UUID;
 
 public class HL7Service {
@@ -67,11 +69,23 @@ public class HL7Service {
     }
 
     public void parseHL7Message() throws HL7Exception {
-        String inputHL7Message = FileUtil.readToString("E:\\Temp\\Debug\\ADT^A28^ADT_A05.txt");
+        String inputHL7Message = FileUtil.readToString("E:\\Temp\\Debug\\检验申请单hl7.txt");
 
         message = parser.parse(inputHL7Message);
 
-        ADT_A05 hl7Msg = (ADT_A05) message;
+        OML_O21 hl7Msg = (OML_O21) message;
+        for (OML_O21_ORDER order : hl7Msg.getORDERAll()) {
+            ORC orc = order.getORC();
+            OBR obr = order.getOBSERVATION_REQUEST().getOBR();
+            SPM spm = null;
+
+            List<OML_O21_SPECIMEN> specimenList = order.getOBSERVATION_REQUEST().getSPECIMENAll();
+            for (OML_O21_SPECIMEN specimen : specimenList) {
+                spm = specimen.getSPM();
+            }
+
+        }
+
         System.out.printf("MessageStructure:%s,MessageControlID:%s", hl7Msg.getMSH().getMessageType().getMessageStructure().getValue(),
                 hl7Msg.getMSH().getMessageControlID().getValue());
     }
