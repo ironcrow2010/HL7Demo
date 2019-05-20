@@ -14,6 +14,7 @@ import ca.uhn.hl7v2.model.v251.segment.*;
 import ca.uhn.hl7v2.parser.GenericParser;
 import ca.uhn.hl7v2.parser.Parser;
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.winning.common.FileUtil;
 import org.apache.log4j.LogManager;
@@ -118,14 +119,22 @@ public class HL7Service {
         ORM_O01 orm = null;
         RequestModel requestModel = JSON.parseObject(inputHL7Message, RequestModel.class);
         String[] hl7List = requestModel.Request.Body;
-        String nteComment = null;
+        String nteCommentText = null;
+
         for(String hl7 : hl7List){
             message = parser.parse(hl7);
             if(message instanceof ORM_O01){
                 orm = (ORM_O01)message;
                 NTE nte = orm.getNTE();
                 if(nte.getCommentReps() > 0){
-                    nteComment = nte.getComment(0).getValue();
+                    nteCommentText = nte.getComment(0).getValue();
+                    JSONArray commentList = JSONObject.parseArray(nteCommentText);
+                    String valueText = null;
+                    for(Object comment : commentList){
+                        JSONObject obj = (JSONObject)comment;
+                        valueText = (String)obj.get("value");
+                        System.out.println(valueText);
+                    }
                 }
                 break;
             }
