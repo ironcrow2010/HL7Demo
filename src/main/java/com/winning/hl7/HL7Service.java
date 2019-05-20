@@ -9,15 +9,20 @@ import ca.uhn.hl7v2.model.v251.group.OML_O21_SPECIMEN;
 import ca.uhn.hl7v2.model.v251.message.ACK;
 import ca.uhn.hl7v2.model.v251.message.ADT_A01;
 import ca.uhn.hl7v2.model.v251.message.OML_O21;
+import ca.uhn.hl7v2.model.v251.message.ORM_O01;
 import ca.uhn.hl7v2.model.v251.segment.*;
 import ca.uhn.hl7v2.parser.GenericParser;
 import ca.uhn.hl7v2.parser.Parser;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.winning.common.FileUtil;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import java.util.List;
 import java.util.UUID;
+
+import com.winning.model.RequestModel;
 
 public class HL7Service {
     private Logger logger = null;
@@ -84,10 +89,11 @@ public class HL7Service {
                 spm = specimen.getSPM();
             }
 
+            System.out.printf("PlacerOrderNumber:%s", orc.getPlacerOrderNumber().
+                    getEntityIdentifier().getValue());
         }
 
-        System.out.printf("MessageStructure:%s,MessageControlID:%s", hl7Msg.getMSH().getMessageType().getMessageStructure().getValue(),
-                hl7Msg.getMSH().getMessageControlID().getValue());
+
     }
 
     public void parseHL7MessageFromText(String inputHL7Message) throws HL7Exception {
@@ -105,5 +111,26 @@ public class HL7Service {
         patientClass = hl7Msg.getPV1().getPatientClass().getValue();
 
         System.out.printf("PatientId:%s, PatientName:%s, PatientClass:%s", patientId, patientName, patientClass);
+    }
+
+    public void parseHL7MessageFromOrignialFile() throws HL7Exception {
+        String inputHL7Message = FileUtil.readToString("E:\\Temp\\Debug\\检查申请单json.txt");
+        ORM_O01 orm = null;
+        RequestModel requestModel = JSON.parseObject(inputHL7Message, RequestModel.class);
+        String[] hl7List = requestModel.Request.Body;
+        String nteComment = null;
+        for(String hl7 : hl7List){
+            message = parser.parse(hl7);
+            if(message instanceof ORM_O01){
+                orm = (ORM_O01)message;
+                NTE nte = orm.getNTE();
+                if(nte.getCommentReps() > 0){
+                    nteComment = nte.getComment(0).getValue();
+                }
+                break;
+            }
+
+        }
+
     }
 }
