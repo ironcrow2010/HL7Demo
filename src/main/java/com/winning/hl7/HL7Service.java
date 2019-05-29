@@ -16,18 +16,17 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.winning.model.RequestModel;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.UUID;
 
 public class HL7Service {
-    private Logger logger = null;
+    private static Logger logger = LoggerFactory.getLogger(HL7Service.class);
     private GenericParser parser = null;
     private Message message;
 
     public HL7Service() {
-        logger = LogManager.getLogger(HL7Service.class);
         DefaultHapiContext context = new DefaultHapiContext();
         parser = context.getGenericParser();
     }
@@ -88,6 +87,7 @@ public class HL7Service {
     }
 
     public void parseHL7FromJson(String jsonText) throws HL7Exception {
+        logger.info("abced");
         ORM_O01 orm = null;
         RequestModel requestModel = JSON.parseObject(jsonText, RequestModel.class);
         String[] hl7List = requestModel.Request.Body;
