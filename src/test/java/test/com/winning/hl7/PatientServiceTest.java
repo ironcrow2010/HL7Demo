@@ -1,25 +1,25 @@
 package test.com.winning.hl7;
 
 import com.winning.common.FileUtil;
-import com.winning.hl7.HL7Service;
+import com.winning.hl7.PatientService;
 import org.junit.Test;
 import org.junit.Before;
 import org.junit.After;
 
 /**
- * HL7Service Tester.
+ * PatientService Tester.
  *
  * @author <Authors name>
  * @version 1.0
  * @since <pre>May 20, 2019</pre>
  */
-public class HL7ServiceTest {
+public class PatientServiceTest {
 
-    private HL7Service service = null;
+    private PatientService service = null;
 
     @Before
     public void before() throws Exception {
-        service = new HL7Service();
+        service = new PatientService();
     }
 
     @After

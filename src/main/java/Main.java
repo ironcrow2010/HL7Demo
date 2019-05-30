@@ -1,9 +1,9 @@
 import ca.uhn.hl7v2.HL7Exception;
-import com.winning.hl7.HL7Service;
+import com.winning.hl7.PatientService;
 
 public class Main {
     public static void main(String[] args) throws HL7Exception {
-        HL7Service service = new HL7Service();
+        PatientService service = new PatientService();
         service.initACK();
     }
 }
