@@ -1,0 +1,17 @@
+Index: src/main/java/Main.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import ca.uhn.hl7v2.HL7Exception;\nimport com.winning.hl7.PatientService;\n\npublic class Main {\n    public static void main(String[] args) throws HL7Exception {\n        PatientService service = new PatientService();\n        service.initACK();\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/Main.java	(revision a71d456585a31540debdac8ee2dfbf384880c92e)
++++ src/main/java/Main.java	
+@@ -3,6 +3,7 @@
+ 
+ public class Main {
+     public static void main(String[] args) throws HL7Exception {
++        // 患者管理
+         PatientService service = new PatientService();
+         service.initACK();
+     }
