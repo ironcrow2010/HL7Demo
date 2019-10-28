@@ -3,7 +3,7 @@ import com.winning.hl7.PatientService;
 
 public class Main {
     public static void main(String[] args) throws HL7Exception {
-        // Push test6
+        // Push test7
         PatientService service = new PatientService();
         service.initACK();
     }
