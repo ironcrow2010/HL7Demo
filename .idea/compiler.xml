@@ -9,8 +9,8 @@
         <module name="HL7Demo" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="HL7Demo" target="1.5" />
+    <bytecodeTargetLevel target="1.8">
+      <module name="HL7Demo" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
