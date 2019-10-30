@@ -50,4 +50,9 @@ public class PatientServiceTest {
         String hl7Text = FileUtil.readToString("E:\\Temp\\Debug\\检查申请单json.txt");
         service.parseHL7FromJson(hl7Text);
     }
+
+    @Test
+    public void testQueryAdmitPatientList() throws Exception{
+        service.QueryAdmitPatientList(0);
+    }
 }
